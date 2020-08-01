@@ -17,8 +17,7 @@ namespace csharp
         {
             for (var i = 0; i < Items.Count; i++)
             {
-                int oldQuality = Items[i].Quality;
-
+                //int oldQuality = Items[i].Quality;
                 //int newQualityEnum = Items[i].Class switch
                 //{
                 //    //when default: -1; sellin <= 10 =  -2; sellin >= 5 = -3; Quality can not be above 50;
@@ -38,15 +37,11 @@ namespace csharp
                 //    _ => oldQuality - 1
                 //};
 
-                Item.ItemClass myClasses = Item.ItemClass.Normal;
-
-                myClasses = Item.ItemClass.Conjured;
-
+                //sellIn decreases logic
 
                 int newQuality = Items[i] switch
                 {
-                    //when default: -1; sellin <= 10 =  -2; sellin >= 5 = -3; Quality can not be above 50;
-                    Item it when it.Name == "aged brie" || 
+                    Item it when it.Name == "Aged Brie" || 
                                  it.Name == "Backstage passes to a TAFKAL80ETC concert" => it.SellIn switch
                     {
                         int sl when sl > 10 => it.Quality + 1,
@@ -63,7 +58,14 @@ namespace csharp
                     Item it => it.Quality - 1
                 };
 
-                Items[i].Quality = newQuality > 0 ? newQuality : 0;
+                if(Items[i].Name == "Aged Brie" || Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                {
+                    Items[i].Quality = newQuality > 50 ? 50 : newQuality;
+                }
+                else
+                {
+                    Items[i].Quality = newQuality > 0 ? newQuality : 0;
+                }
             }
         }
     }
