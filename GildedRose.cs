@@ -55,8 +55,14 @@ namespace csharp
                         _ => it.Quality - 4
                     },
                     Item it when it.Name == "Sulfuras, Hand of Ragnaros" => it.Quality,
-                    Item it => it.Quality - 1
+                    Item it => it.SellIn switch
+                    {
+                        int sl when sl >= 0 => it.Quality - 1,
+                        _ => it.Quality - 2
+                    }
                 };
+
+
 
                 if(Items[i].Name == "Aged Brie" || Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
@@ -65,6 +71,11 @@ namespace csharp
                 else
                 {
                     Items[i].Quality = newQuality > 0 ? newQuality : 0;
+                }
+
+                if(Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                {
+                    Items[i].SellIn--;
                 }
             }
         }
