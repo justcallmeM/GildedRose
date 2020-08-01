@@ -17,28 +17,6 @@ namespace csharp
         {
             for (var i = 0; i < Items.Count; i++)
             {
-                //int oldQuality = Items[i].Quality;
-                //int newQualityEnum = Items[i].Class switch
-                //{
-                //    //when default: -1; sellin <= 10 =  -2; sellin >= 5 = -3; Quality can not be above 50;
-                //    Item.ItemClass.Passes => Items[i].SellIn switch
-                //    {
-                //        int sl when sl > 10 => oldQuality + 1,
-                //        int sl when sl > 5 => oldQuality + 2,
-                //        int sl when sl > 0 => oldQuality + 3,
-                //        _ => 0
-                //    },
-                //    Item.ItemClass.Conjured => Items[i].SellIn switch
-                //    {
-                //        int sl when sl >= 0 => oldQuality - 2,
-                //        _ => oldQuality - 4
-                //    },
-                //    Item.ItemClass.Legendary => oldQuality,
-                //    _ => oldQuality - 1
-                //};
-
-                //sellIn decreases logic
-
                 int newQuality = Items[i] switch
                 {
                     Item it when it.Name == "Aged Brie" || 
@@ -72,6 +50,51 @@ namespace csharp
                 }
 
                 if(Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                {
+                    Items[i].SellIn--;
+                }
+            }
+        }
+
+
+        public void UpdateQualityImproved()
+        {
+            for (var i = 0; i < Items.Count; i++)
+            {
+                int oldQuality = Items[i].Quality;
+
+                int newQuality = Items[i].Class switch
+                {
+                    Item.ItemClass.Passes => Items[i].SellIn switch
+                    {
+                        int sl when sl > 10 => oldQuality + 1,
+                        int sl when sl > 5 => oldQuality + 2,
+                        int sl when sl > 0 => oldQuality + 3,
+                        _ => 0
+                    },
+                    Item.ItemClass.Conjured => Items[i].SellIn switch
+                    {
+                        int sl when sl >= 0 => oldQuality - 2,
+                        _ => oldQuality - 4
+                    },
+                    Item.ItemClass.Legendary => oldQuality,
+                    _ => Items[i].SellIn switch
+                    {
+                        int sl when sl >= 0 => oldQuality - 1,
+                        _ => oldQuality - 2
+                    }
+                };
+
+                if (Items[i].Class == Item.ItemClass.Passes)
+                {
+                    Items[i].Quality = newQuality > 50 ? 50 : newQuality;
+                }
+                else
+                {
+                    Items[i].Quality = newQuality > 0 ? newQuality : 0;
+                }
+
+                if (Items[i].Class != Item.ItemClass.Legendary)
                 {
                     Items[i].SellIn--;
                 }
