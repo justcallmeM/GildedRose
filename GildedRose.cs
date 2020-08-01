@@ -57,12 +57,10 @@ namespace csharp
                     Item it when it.Name == "Sulfuras, Hand of Ragnaros" => it.Quality,
                     Item it => it.SellIn switch
                     {
-                        int sl when sl >= 0 => it.Quality - 1,
+                        int sl when sl > 0 => it.Quality - 1,
                         _ => it.Quality - 2
                     }
                 };
-
-
 
                 if(Items[i].Name == "Aged Brie" || Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
                 {
