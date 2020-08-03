@@ -20,20 +20,20 @@ namespace csharp
                     Item it when it.Name == "Conjured Mana Cake" => it.SellIn switch
                     {
                         int sl when sl > 0 => it.Quality - 2,
-                        _                  => it.Quality - 4
+                        _ => it.Quality - 4
                     },
                     Item it when it.Name == "Aged Brie" ||
                                  it.Name == "Backstage passes to a TAFKAL80ETC concert" => it.SellIn switch
-                    {
-                        int sl when sl > 10 => it.Quality + 1,
-                        int sl when sl > 5  => it.Quality + 2,
-                        int sl when sl > 0  => it.Quality + 3,
-                        _                   => 0
-                    },
+                                 {
+                                     int sl when sl > 10 => it.Quality + 1,
+                                     int sl when sl > 5 => it.Quality + 2,
+                                     int sl when sl > 0 => it.Quality + 3,
+                                     _ => 0
+                                 },
                     Item it => it.SellIn switch
                     {
                         int sl when sl > 0 => it.Quality - 1,
-                        _                  => it.Quality - 2
+                        _ => it.Quality - 2
                     }
                 };
 
@@ -104,117 +104,5 @@ namespace csharp
         //        }
         //    }
         //}
-
-        //-------------------------------------------THIRD IMPLEMENTATION-------------------------------------------------
-        //This is another approach that could be implemented. And of course instead of strings we would use enums.
-        //This method would enable us to test each of the quality reduction methods more efficiently.
-
-        //public void UpdateQuality()
-        //{
-        //    for (var i = 0; i < Items.Count; i++)
-        //    {
-        //        switch (Items[i].Name)
-        //        {
-        //            case "Aged Brie":
-        //            case "Backstage passes to a TAFKAL80ETC concert":
-        //                Items[i].TreatAsBackstagePass();
-        //                break;
-
-        //            case "Conjured Mana Cake":
-        //                Items[i].TreatAsCojured();
-        //                break;
-
-        //            case "Sulfuras, Hand of Ragnaros":
-        //                Items[i].TreatAsLegendary();
-        //                break;
-
-        //            default:
-        //                Items[i].TreatAsNormal();
-        //                break;
-        //        }
-        //    }
-        //}
     }
-
-    //public static class ItemClassRuleExtensions
-    //{
-    //    public static Item TreatAsNormal(this Item item)
-    //    {
-    //        if (item.Quality > 0)
-    //        {
-    //            if (item.SellIn > 0)
-    //            {
-    //                item.Quality--;
-    //            }
-    //            else
-    //            {
-    //                if (item.Quality > 0 && item.Quality != 1)
-    //                {
-    //                    item.Quality -= 2;
-    //                }
-    //                else
-    //                {
-    //                    item.Quality--;
-    //                }
-    //            }
-    //        }
-
-    //        item.SellIn--;
-
-    //        return item;
-    //    }
-
-    //    public static Item TreatAsLegendary(this Item item)
-    //    {
-    //        return item;
-    //    }
-
-    //public static Item TreatAsBackstagePass(this Item item)
-    //{
-    //    if (item.Quality < 50)
-    //    {
-    //        if (item.SellIn > 10)
-    //        {
-    //            item.Quality += 1;
-    //        }
-    //        else if (item.SellIn > 5)
-    //        {
-    //            item.Quality += 2;
-    //        }
-    //        else
-    //        {
-    //            item.Quality += 3;
-    //        }
-    //    }
-
-    //    item.Quality = item.Quality > 50 ? item.Quality = 50 : item.Quality;
-
-    //    item.Quality = item.SellIn <= 0 ? item.Quality = 0 : item.Quality;
-
-    //    item.SellIn--;
-
-    //    return item;
-    //}
-
-    //    public static Item TreatAsCojured(this Item item)
-    //    {
-    //        if (item.Quality > 0)
-    //        {
-    //            if (item.SellIn > 0)
-    //            {
-    //                item.Quality -= 2;
-    //            }
-    //            else
-    //            {
-    //                item.Quality -= 4;
-    //            }
-    //        }
-
-    //        item.Quality = item.Quality < 0 ? 0 : item.Quality;
-
-    //        item.SellIn--;
-
-    //        return item;
-    //    }
-    //}
 }
