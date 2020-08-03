@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data;
+using System.Runtime.InteropServices;
 
 namespace csharp
 {
@@ -20,20 +22,20 @@ namespace csharp
                     Item it when it.Name == "Conjured Mana Cake" => it.SellIn switch
                     {
                         int sl when sl > 0 => it.Quality - 2,
-                        _ => it.Quality - 4
+                        _                  => it.Quality - 4
                     },
                     Item it when it.Name == "Aged Brie" ||
                                  it.Name == "Backstage passes to a TAFKAL80ETC concert" => it.SellIn switch
                                  {
                                      int sl when sl > 10 => it.Quality + 1,
-                                     int sl when sl > 5 => it.Quality + 2,
-                                     int sl when sl > 0 => it.Quality + 3,
-                                     _ => 0
+                                     int sl when sl > 5  => it.Quality + 2,
+                                     int sl when sl > 0  => it.Quality + 3,
+                                     _                   => 0
                                  },
                     Item it => it.SellIn switch
                     {
                         int sl when sl > 0 => it.Quality - 1,
-                        _ => it.Quality - 2
+                        _                  => it.Quality - 2
                     }
                 };
 
@@ -60,7 +62,7 @@ namespace csharp
         //this means thats not only the algorithm readability and maintainability improved, but we can work with an item class in other ways to improve
         //the overall design of the program.
 
-        //public void UpdateQualityImproved()
+        //public void UpdateQuality()
         //{
         //    for (var i = 0; i < Items.Count; i++)
         //    {
@@ -69,19 +71,22 @@ namespace csharp
 
         //        int newQuality = Items[i].Class switch
         //        {
-        //            Item.ItemClass.Passes => sellIn switch
-        //            {
-        //                int sl when sl > 10 => oldQuality + 1,
-        //                int sl when sl > 5 => oldQuality + 2,
-        //                int sl when sl > 0 => oldQuality + 3,
-        //                _ => 0
-        //            },
+        //            Item.ItemClass.Legendary => oldQuality,
+
         //            Item.ItemClass.Conjured => sellIn switch
         //            {
         //                int sl when sl > 0 => oldQuality - 2,
         //                _ => oldQuality - 4
         //            },
-        //            Item.ItemClass.Legendary => oldQuality,
+
+        //            Item.ItemClass.Passes => sellIn switch
+        //            {
+        //                int sl when sl > 10 => oldQuality + 1,
+        //                int sl when sl > 5  => oldQuality + 2,
+        //                int sl when sl > 0  => oldQuality + 3,
+        //                _                   => 0
+        //            },
+
         //            _ => sellIn switch
         //            {
         //                int sl when sl > 0 => oldQuality - 1,
@@ -104,5 +109,101 @@ namespace csharp
         //        }
         //    }
         //}
+
+        //-------------------------------------------THIRD IMPLEMENTATION-------------------------------------------------
+        //This is another approach that could be implemented. And of course instead of strings we would use enums.
+        //This method would enable us to test each of the quality reduction methods more efficiently.
+
+        //public void UpdateQuality()
+        //{
+        //    for (var i = 0; i < Items.Count; i++)
+        //    {
+        //        switch (Items[i].Name)
+        //        {
+        //            case "Aged Brie":
+        //            case "Backstage passes to a TAFKAL80ETC concert":
+        //                Items[i].TreatAsBackstagePass();
+        //                break;
+
+        //            case "Conjured Mana Cake":
+        //                Items[i].TreatAsCojured();
+        //                break;
+
+        //            case "Sulfuras, Hand of Ragnaros":
+        //                Items[i].TreatAsLegendary();
+        //                break;
+
+        //            default:
+        //                Items[i].TreatAsNormal();
+        //                break;
+        //        }
+        //    }
+        //}
     }
+
+    //public static class ItemClassRuleExtensions
+    //{
+    //    public static Item TreatAsNormal(this Item item)
+    //    {
+    //        int newQuality = item.Quality switch
+    //        {
+    //            int q when q > 0 => item.SellIn switch
+    //            {
+    //                int sl when sl > 0 => item.Quality--,
+    //                _                  => item.Quality -= 2
+    //            },
+    //            _                      => item.Quality
+    //        };
+
+    //        item.Quality = newQuality < 0 ? 0 : newQuality;
+
+    //        item.SellIn--;
+
+    //        return item;
+    //    }
+
+    //    public static Item TreatAsLegendary(this Item item)
+    //        => item;
+
+    //    public static Item TreatAsBackstagePass(this Item item)
+    //    {
+    //        int newQuality = item.Quality switch
+    //        {
+    //            int q when q < 50 => item.SellIn switch
+    //            {
+    //                int sl when sl > 10 => item.Quality += 1,
+    //                int sl when sl > 5  => item.Quality += 2,
+    //                _                   => item.Quality += 3
+    //            },
+    //            _                       => item.Quality
+    //        };
+
+    //        item.Quality = newQuality > 50 ? 50 : newQuality;
+
+    //        item.Quality = item.SellIn <= 0 ? item.Quality = 0 : item.Quality;
+
+    //        item.SellIn--;
+
+    //        return item;
+    //    }
+
+    //    public static Item TreatAsCojured(this Item item)
+    //    {
+    //        int newQuality = item.Quality switch
+    //        {
+    //            int q when q > 0 => item.SellIn switch
+    //            {
+    //                int sl when sl > 0 => item.Quality -= 2,
+    //                _                  => item.Quality -= 4
+    //            },
+    //            _                      => item.Quality
+    //        };
+
+    //        item.Quality = newQuality < 0 ? 0 : newQuality;
+
+    //        item.SellIn--;
+
+    //        return item;
+    //    }
+    //}
 }

@@ -33,7 +33,7 @@ namespace csharp
         }
 
         [Test]
-        public void UpdateQuality_BackstagePassesDoesntChange()
+        public void UpdateQuality_BackstagePassesChangesAccordingly()
         {
             List<Item> Items = new List<Item>
             {
@@ -53,27 +53,24 @@ namespace csharp
 
                 for(int j = 0; j < Items.Count; j++)
                 {
-                    if (ItemsChanged[j].Quality < 50)
+                    Item item = ItemsChanged[j];
+
+                    int newQuality = item.Quality switch
                     {
-                        if (ItemsChanged[j].SellIn > 10)
+                        int q when q < 50 => item.SellIn switch
                         {
-                            ItemsChanged[j].Quality += 1;
-                        }
-                        else if (ItemsChanged[j].SellIn > 5)
-                        {
-                            ItemsChanged[j].Quality += 2;
-                        }
-                        else
-                        {
-                            ItemsChanged[j].Quality += 3;
-                        }
-                    }
+                            int sl when sl > 10 => item.Quality += 1,
+                            int sl when sl > 5  => item.Quality += 2,
+                            _                   => item.Quality += 3
+                        },
+                        _ => item.Quality
+                    };
 
-                    ItemsChanged[j].Quality = ItemsChanged[j].Quality > 50 ? ItemsChanged[j].Quality = 50 : ItemsChanged[j].Quality;
+                    item.Quality = newQuality > 50 ? 50 : newQuality;
 
-                    ItemsChanged[j].Quality = ItemsChanged[j].SellIn <= 0 ? ItemsChanged[j].Quality = 0 : ItemsChanged[j].Quality;
+                    item.Quality = item.SellIn <= 0 ? item.Quality = 0 : item.Quality;
 
-                    ItemsChanged[j].SellIn--;
+                    item.SellIn--;
 
                     Assert.AreEqual(ItemsChanged[j].Quality, Items[j].Quality);
                     Assert.AreEqual(ItemsChanged[j].SellIn, Items[j].SellIn);
@@ -82,7 +79,7 @@ namespace csharp
         }
 
         [Test]
-        public void UpdateQuality_NormalDoesntChange()
+        public void UpdateQuality_NormalChangesAccordingly()
         {
             List<Item> Items = new List<Item>
             {
@@ -100,26 +97,21 @@ namespace csharp
 
                 for (int j = 0; j < Items.Count; j++)
                 {
-                    if (ItemsChanged[j].Quality > 0)
-                    {
-                        if (ItemsChanged[j].SellIn > 0)
-                        {
-                            ItemsChanged[j].Quality--;
-                        }
-                        else
-                        {
-                            if (ItemsChanged[j].Quality > 0 && ItemsChanged[j].Quality != 1)
-                            {
-                                ItemsChanged[j].Quality -= 2;
-                            }
-                            else
-                            {
-                                ItemsChanged[j].Quality--;
-                            }
-                        }
-                    }
+                    Item item = ItemsChanged[j];
 
-                    ItemsChanged[j].SellIn--;
+                    int newQuality = item.Quality switch
+                    {
+                        int q when q > 0 => item.SellIn switch
+                        {
+                            int sl when sl > 0 => item.Quality--,
+                            _                  => item.Quality -= 2
+                        },
+                        _ => item.Quality
+                    };
+
+                    item.Quality = newQuality < 0 ? 0 : newQuality;
+
+                    item.SellIn--;
 
                     Assert.AreEqual(ItemsChanged[j].Quality, Items[j].Quality);
                     Assert.AreEqual(ItemsChanged[j].SellIn, Items[j].SellIn);
@@ -128,7 +120,7 @@ namespace csharp
         }
 
         [Test]
-        public void UpdateQuality_ConjuredDoesntChange()
+        public void UpdateQuality_ConjureChangesAccordingly()
         {
             List<Item> Items = new List<Item>
             {
@@ -145,21 +137,21 @@ namespace csharp
 
                 for (int j = 0; j < Items.Count; j++)
                 {
-                    if (ItemsChanged[j].Quality > 0)
+                    Item item = ItemsChanged[j];
+
+                    int newQuality = item.Quality switch
                     {
-                        if (ItemsChanged[j].SellIn > 0)
+                        int q when q > 0 => item.SellIn switch
                         {
-                            ItemsChanged[j].Quality -= 2;
-                        }
-                        else
-                        {
-                            ItemsChanged[j].Quality -= 4;
-                        }
-                    }
+                            int sl when sl > 0 => item.Quality -= 2,
+                            _                  => item.Quality -= 4
+                        },
+                        _ => item.Quality
+                    };
 
-                    ItemsChanged[j].Quality = ItemsChanged[j].Quality < 0 ? 0 : ItemsChanged[j].Quality;
+                    item.Quality = newQuality < 0 ? 0 : newQuality;
 
-                    ItemsChanged[j].SellIn--;
+                    item.SellIn--;
 
                     Assert.AreEqual(ItemsChanged[j].Quality, Items[j].Quality);
                     Assert.AreEqual(ItemsChanged[j].SellIn, Items[j].SellIn);

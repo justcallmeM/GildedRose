@@ -8,6 +8,7 @@ namespace csharp
         //This implementation lacks structure, thus to improve this design I'd create a class "Shop", which would be responsible for the daily refresh of the item values,
         //Shop would also have other useful methods that any game vendor would have. I'll try and create my final picture of the design, but in a separate project, because it no
         //longer would be refactoring, but instead a rewriting of the whole program.
+
         public static void Main(string[] args)
         {
             Console.WriteLine("OMGHAI!");
@@ -71,10 +72,8 @@ namespace csharp
         //            Console.WriteLine(Items[j]);
         //        }
         //        Console.WriteLine("");
-        //        app.UpdateQualityImproved();
+        //        app.UpdateQuality();
         //    }
-
-        //    Console.ReadKey(true);
         //}
     }
 }
